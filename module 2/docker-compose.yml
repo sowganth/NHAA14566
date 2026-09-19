@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  svi-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nhaa-svi-engine
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=NHAA-SVI-Engine
+      - APP_ENV=production
+      - API_V1_PREFIX=/api/v1
+      - DATABASE_URL=postgresql://svi_user:svi_secret_password@postgres:5432/svi_db
+      - API_KEY_REQUIRED=false
+      - SCORING_CONFIG_PATH=config/scoring.yaml
+      - LOG_LEVEL=INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: nhaa-svi-postgres
+    environment:
+      POSTGRES_USER: svi_user
+      POSTGRES_PASSWORD: svi_secret_password
+      POSTGRES_DB: svi_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U svi_user -d svi_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

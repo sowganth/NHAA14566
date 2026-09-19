@@ -1,0 +1,168 @@
+# SVI Scoring Engine Configuration
+# National Helpline Against Atrocities (NHAA 14566)
+# Decision Support System - Not for Clinical Diagnosis
+
+model:
+  name: "SVI_RULE_ENGINE"
+  version: "1.0.0"
+  description: "Deterministic weighted rule engine for psychological stress & vulnerability assessment"
+
+# Feature weights used to compute raw SVI score
+# Values represent proportional contribution (sum ~ 1.0)
+weights:
+  stress: 0.08
+  anxiety: 0.07
+  trauma: 0.08
+  sadness: 0.04
+  helplessness: 0.07
+  fear: 0.10
+  threat: 0.08
+  intimidation: 0.07
+  social_isolation: 0.07
+  displacement: 0.04
+  ongoing_threat: 0.05
+  speech_distress: 0.05
+  speech_hesitation: 0.05
+  speech_instability: 0.05
+  contextual_risk: 0.10
+
+# Weights for individual context flags to compute contextual_risk (0-100)
+context_weights:
+  violence_reported: 0.20
+  sexual_violence_reported: 0.25
+  murder_of_family_member: 0.25
+  displacement: 0.10
+  social_boycott: 0.10
+  ongoing_threat: 0.15
+  legal_delay: 0.05
+
+# Risk category threshold boundaries
+risk_levels:
+  low:
+    min: 0
+    max: 25
+    label: "LOW"
+    description: "Mild stress indicators; routine support indicated"
+  moderate:
+    min: 26
+    max: 50
+    label: "MODERATE"
+    description: "Moderate distress; targeted counselling and guidance advised"
+  high:
+    min: 51
+    max: 75
+    label: "HIGH"
+    description: "Substantial distress & vulnerability; priority human caseworker intervention"
+  critical:
+    min: 76
+    max: 100
+    label: "CRITICAL"
+    description: "Severe distress or danger; urgent human review required"
+
+# Indicator severity level thresholds (for single feature display)
+indicator_severity:
+  low:
+    min: 0
+    max: 30
+  moderate:
+    min: 31
+    max: 60
+  high:
+    min: 61
+    max: 80
+  critical:
+    min: 81
+    max: 100
+
+# Critical Safety Overrides
+# Safety rules override standard weighted scoring and mandate human review
+safety_rules:
+  immediate_danger:
+    enabled: true
+    trigger_value: 1 # bool true or numeric >= 1
+    override_category: "CRITICAL"
+    human_review_required: true
+    priority: "URGENT_HUMAN_REVIEW"
+    flag: "IMMEDIATE_DANGER"
+    reason: "Immediate physical danger indicated by caller/victim"
+
+  suicidal_ideation:
+    enabled: true
+    threshold: 40.0
+    override_category: "CRITICAL"
+    human_review_required: true
+    priority: "URGENT_HUMAN_REVIEW"
+    flag: "SUICIDAL_IDEATION_DETECTED"
+    reason: "Explicit suicidal ideation indicator exceeds safety threshold"
+
+  self_harm_indicator:
+    enabled: true
+    threshold: 40.0
+    override_category: "CRITICAL"
+    human_review_required: true
+    priority: "URGENT_HUMAN_REVIEW"
+    flag: "SELF_HARM_RISK_DETECTED"
+    reason: "Explicit self-harm indicator exceeds safety threshold"
+
+  severe_threat:
+    enabled: true
+    threshold: 85.0
+    override_category: "CRITICAL"
+    human_review_required: true
+    priority: "URGENT_HUMAN_REVIEW"
+    flag: "SEVERE_THREAT_PRESENT"
+    reason: "Severe threat score exceeds acute safety threshold"
+
+  atrocity_murder:
+    enabled: true
+    context_field: "murder_of_family_member"
+    override_category: "CRITICAL"
+    human_review_required: true
+    priority: "URGENT_HUMAN_REVIEW"
+    flag: "ATROCITY_MURDER_REPORTED"
+    reason: "Murder of family member reported under PoA / atrocity context"
+
+  sexual_violence:
+    enabled: true
+    context_field: "sexual_violence_reported"
+    override_category: "CRITICAL"
+    human_review_required: true
+    priority: "URGENT_HUMAN_REVIEW"
+    flag: "SEXUAL_VIOLENCE_REPORTED"
+    reason: "Sexual violence reported; mandatory expedited human review"
+
+# Support priority recommendations by risk category
+recommendations:
+  LOW:
+    priority: "ROUTINE"
+    suggested_support:
+      - "Information on helpline services and rights"
+      - "Optional counselling referral upon request"
+      - "Scheduled follow-up contact"
+  MODERATE:
+    priority: "PRIORITY"
+    suggested_support:
+      - "Counselling referral"
+      - "Legal aid information and documentation support"
+      - "Follow-up welfare check within 48 hours"
+  HIGH:
+    priority: "HIGH_PRIORITY"
+    suggested_support:
+      - "Priority psychological first-aid counselling"
+      - "Direct legal aid referral with designated nodal officer"
+      - "Medical support assessment"
+      - "Human caseworker review within 24 hours"
+  CRITICAL:
+    priority: "URGENT"
+    suggested_support:
+      - "Immediate human caseworker review"
+      - "Emergency shelter & protection assessment"
+      - "Appropriate medical/mental-health support coordination"
+      - "Appropriate protection/police intervention where legally warranted and requested by victim"
+  URGENT_HUMAN_REVIEW:
+    priority: "URGENT_HUMAN_REVIEW"
+    suggested_support:
+      - "Mandatory immediate human caseworker review"
+      - "Emergency support protocol initiation"
+      - "Immediate safety planning with victim"
+      - "Inter-agency rapid response coordination"

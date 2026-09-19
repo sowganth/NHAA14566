@@ -1,0 +1,162 @@
+[
+  {
+    "case_id": "NHAA-DEMO-001",
+    "language": "en",
+    "description": "Scenario 1: Low-risk routine inquiry with mild distress",
+    "features": {
+      "stress": 18,
+      "trauma": 12,
+      "fear": 15,
+      "anxiety": 14,
+      "sadness": 10,
+      "anger": 15,
+      "social_isolation": 10,
+      "intimidation": 8,
+      "threat": 10,
+      "helplessness": 12,
+      "speech_distress": 15,
+      "speech_hesitation": 10,
+      "speech_instability": 8,
+      "suicidal_ideation": 0,
+      "self_harm_indicator": 0,
+      "immediate_danger": 0
+    },
+    "context": {
+      "violence_reported": false,
+      "sexual_violence_reported": false,
+      "murder_of_family_member": false,
+      "displacement": false,
+      "social_boycott": false,
+      "ongoing_threat": false,
+      "legal_delay": false
+    }
+  },
+  {
+    "case_id": "NHAA-DEMO-002",
+    "language": "hi",
+    "description": "Scenario 2: Moderate-risk case requiring counselling and legal aid guidance",
+    "features": {
+      "stress": 42,
+      "trauma": 38,
+      "fear": 35,
+      "anxiety": 45,
+      "sadness": 40,
+      "anger": 30,
+      "social_isolation": 40,
+      "intimidation": 35,
+      "threat": 32,
+      "helplessness": 42,
+      "speech_distress": 38,
+      "speech_hesitation": 35,
+      "speech_instability": 30,
+      "suicidal_ideation": 0,
+      "self_harm_indicator": 0,
+      "immediate_danger": 0
+    },
+    "context": {
+      "violence_reported": false,
+      "sexual_violence_reported": false,
+      "murder_of_family_member": false,
+      "displacement": false,
+      "social_boycott": false,
+      "ongoing_threat": false,
+      "legal_delay": true
+    }
+  },
+  {
+    "case_id": "NHAA-DEMO-003",
+    "language": "ta",
+    "description": "Scenario 3: High-risk case with physical violence and active threats",
+    "features": {
+      "stress": 68,
+      "trauma": 65,
+      "fear": 72,
+      "anxiety": 70,
+      "sadness": 55,
+      "anger": 45,
+      "social_isolation": 65,
+      "intimidation": 70,
+      "threat": 68,
+      "helplessness": 64,
+      "speech_distress": 65,
+      "speech_hesitation": 60,
+      "speech_instability": 58,
+      "suicidal_ideation": 0,
+      "self_harm_indicator": 0,
+      "immediate_danger": 0
+    },
+    "context": {
+      "violence_reported": true,
+      "sexual_violence_reported": false,
+      "murder_of_family_member": false,
+      "displacement": true,
+      "social_boycott": false,
+      "ongoing_threat": true,
+      "legal_delay": false
+    }
+  },
+  {
+    "case_id": "NHAA-DEMO-004",
+    "language": "te",
+    "description": "Scenario 4: Critical-risk case with severe composite trauma and social boycott",
+    "features": {
+      "stress": 85,
+      "trauma": 88,
+      "fear": 92,
+      "anxiety": 86,
+      "sadness": 78,
+      "anger": 65,
+      "social_isolation": 82,
+      "intimidation": 88,
+      "threat": 90,
+      "helplessness": 84,
+      "speech_distress": 82,
+      "speech_hesitation": 80,
+      "speech_instability": 84,
+      "suicidal_ideation": 0,
+      "self_harm_indicator": 0,
+      "immediate_danger": 0
+    },
+    "context": {
+      "violence_reported": true,
+      "sexual_violence_reported": false,
+      "murder_of_family_member": false,
+      "displacement": true,
+      "social_boycott": true,
+      "ongoing_threat": true,
+      "legal_delay": true
+    }
+  },
+  {
+    "case_id": "NHAA-DEMO-005",
+    "language": "ta",
+    "description": "Scenario 5: Acute Critical Safety Override with Immediate Danger & Ongoing Threat",
+    "features": {
+      "stress": 72,
+      "trauma": 68,
+      "fear": 81,
+      "anxiety": 75,
+      "sadness": 60,
+      "anger": 35,
+      "social_isolation": 70,
+      "intimidation": 85,
+      "threat": 80,
+      "helplessness": 76,
+      "speech_distress": 72,
+      "speech_hesitation": 65,
+      "speech_instability": 70,
+      "suicidal_ideation": 0,
+      "self_harm_indicator": 0,
+      "immediate_danger": 1
+    },
+    "context": {
+      "violence_reported": true,
+      "sexual_violence_reported": false,
+      "murder_of_family_member": false,
+      "displacement": true,
+      "social_boycott": true,
+      "ongoing_threat": true,
+      "legal_delay": true
+    }
+  }
+]
