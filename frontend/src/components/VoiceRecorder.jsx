@@ -162,57 +162,57 @@ export default function VoiceRecorder({ onAnalysisComplete, selectedLanguage = '
   };
 
   return (
-    <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm warm-card-hover">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+    <div className="bg-gradient-to-br from-slate-900/90 via-slate-900 to-violet-950/70 border border-violet-500/25 rounded-2xl p-6 shadow-[0_18px_45px_rgba(15,23,42,0.4)]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-violet-500/20">
         <div className="flex items-center space-x-3">
-          <div className="p-2.5 bg-amber-50 text-amber-700 rounded-xl">
+          <div className="p-2.5 bg-violet-200/20 text-violet-100 rounded-xl border border-violet-200/30 shadow-inner">
             <Mic className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-800">Voice & Speech Input</h2>
-            <p className="text-xs text-slate-500">Acoustic prosody & speech emotion indicator extraction</p>
+            <h2 className="text-base font-bold text-white">Voice & Speech Input</h2>
+            <p className="text-xs text-violet-100/80">Acoustic prosody & speech emotion indicator extraction</p>
           </div>
         </div>
 
         <button
           onClick={handleLoadDemoVoice}
-          className="flex items-center space-x-1.5 px-3.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+          className="flex items-center space-x-1.5 px-3.5 py-1.5 bg-slate-950/70 hover:bg-violet-900/90 text-violet-100 border border-violet-300/30 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           <span>Load Demo Audio ({currentLang})</span>
         </button>
       </div>
 
       {validationError && (
-        <div className="mt-4 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-900 flex items-center space-x-2 font-medium">
-          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+        <div className="mt-4 p-3.5 bg-rose-950/70 border border-rose-700 rounded-xl text-xs text-rose-100 flex items-center space-x-2 font-medium">
+          <AlertCircle className="w-4 h-4 text-rose-300 shrink-0" />
           <span>{validationError}</span>
         </div>
       )}
 
       {isDemoMode && (
-        <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-center justify-between font-medium">
+        <div className="mt-4 p-3 bg-violet-500/10 border border-violet-400/30 rounded-xl text-xs text-violet-100 flex items-center justify-between font-medium">
           <span className="font-bold flex items-center">
-            <Activity className="w-4 h-4 mr-1.5 text-amber-600 animate-pulse" /> Demo Audio Processing Active
+            <Activity className="w-4 h-4 mr-1.5 text-violet-300 animate-pulse" /> Demo Audio Processing Active
           </span>
-          <span className="text-[11px] text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full font-bold">Simulated Mic Recording</span>
+          <span className="text-[11px] text-violet-100 bg-slate-900/70 px-2 py-0.5 rounded-full font-bold border border-violet-500/20">Simulated Mic Recording</span>
         </div>
       )}
 
       <div className="mt-5 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center">
-              <Languages className="w-3.5 h-3.5 mr-1 text-amber-700" />
+            <label className="block text-xs font-bold text-violet-100 mb-1.5 flex items-center">
+              <Languages className="w-3.5 h-3.5 mr-1 text-violet-300" />
               Select Interaction Language
             </label>
             <select
               value={currentLang}
               onChange={(e) => handleLanguageChange(e.target.value)}
-              className="w-full bg-stone-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/30 cursor-pointer"
+              className="w-full bg-slate-950 border border-violet-500/35 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-violet-500/30 cursor-pointer"
             >
               {LANGUAGES.map((lang) => (
-                <option key={lang} value={lang} className="bg-white text-slate-800 font-medium">
+                <option key={lang} value={lang} className="bg-slate-900 text-white font-medium">
                   {lang}
                 </option>
               ))}
@@ -220,7 +220,7 @@ export default function VoiceRecorder({ onAnalysisComplete, selectedLanguage = '
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
+            <label className="block text-xs font-bold text-violet-100 mb-1.5">
               Case / Reference ID <span className="text-slate-400 font-normal">(Optional)</span>
             </label>
             <input
@@ -228,28 +228,28 @@ export default function VoiceRecorder({ onAnalysisComplete, selectedLanguage = '
               value={caseId}
               onChange={(e) => setCaseId(e.target.value)}
               placeholder="e.g. DEMO-14566-VOICE"
-              className="w-full bg-stone-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/30 font-medium"
+              className="w-full bg-slate-950 border border-violet-500/35 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-violet-500/30 font-medium"
             />
           </div>
         </div>
 
-        <div className="bg-stone-50/80 border border-slate-200/80 rounded-2xl p-5 flex flex-col items-center justify-center space-y-4">
-          <div className="w-full h-18 bg-white rounded-xl overflow-hidden relative flex items-center justify-center border border-slate-200/80 shadow-inner p-2">
+        <div className="bg-slate-950/60 border border-violet-500/20 rounded-2xl p-5 flex flex-col items-center justify-center space-y-4">
+          <div className="w-full h-18 bg-slate-900 rounded-xl overflow-hidden relative flex items-center justify-center border border-violet-500/20 shadow-inner p-2">
             {isRecording ? (
               <div className="flex items-center space-x-1.5 animate-pulse">
                 <span className="w-2.5 h-8 bg-rose-500 rounded-full"></span>
-                <span className="w-2.5 h-12 bg-rose-600 rounded-full"></span>
-                <span className="w-2.5 h-6 bg-rose-400 rounded-full"></span>
-                <span className="text-xs text-rose-700 ml-2 font-mono font-extrabold">Recording Live Audio: {formatTime(recordingDuration)}</span>
+                <span className="w-2.5 h-12 bg-fuchsia-500 rounded-full"></span>
+                <span className="w-2.5 h-6 bg-violet-400 rounded-full"></span>
+                <span className="text-xs text-violet-200 ml-2 font-mono font-extrabold">Recording Live Audio: {formatTime(recordingDuration)}</span>
               </div>
             ) : audioUrl ? (
-              <div className="flex items-center space-x-2 text-xs text-emerald-800 font-bold bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-200">
-                <Play className="w-4 h-4 text-emerald-600" />
+              <div className="flex items-center space-x-2 text-xs text-emerald-200 font-bold bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-400/30">
+                <Play className="w-4 h-4 text-emerald-300" />
                 <span>Audio Stream Ready for Acoustic Feature Extraction</span>
               </div>
             ) : (
-              <p className="text-xs text-slate-500 font-medium flex items-center">
-                <Mic className="w-4 h-4 mr-1.5 text-amber-600" /> Click microphone button to start recording voice intake
+              <p className="text-xs text-slate-300 font-medium flex items-center">
+                <Mic className="w-4 h-4 mr-1.5 text-violet-300" /> Click microphone button to start recording voice intake
               </p>
             )}
           </div>
@@ -259,7 +259,7 @@ export default function VoiceRecorder({ onAnalysisComplete, selectedLanguage = '
               <button
                 type="button"
                 onClick={startRecording}
-                className="flex items-center space-x-2 px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-full font-bold text-xs shadow-md transition-all cursor-pointer hover:scale-105"
+                className="flex items-center space-x-2 px-6 py-2.5 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-indigo-600 hover:from-violet-400 hover:via-fuchsia-400 hover:to-indigo-500 text-white rounded-full font-bold text-xs shadow-md transition-all cursor-pointer hover:scale-105"
               >
                 <Mic className="w-4 h-4" />
                 <span>Start Recording</span>
@@ -268,15 +268,15 @@ export default function VoiceRecorder({ onAnalysisComplete, selectedLanguage = '
               <button
                 type="button"
                 onClick={stopRecording}
-                className="flex items-center space-x-2 px-6 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-full font-bold text-xs shadow-md transition-all cursor-pointer animate-pulse"
+                className="flex items-center space-x-2 px-6 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full font-bold text-xs shadow-md transition-all cursor-pointer animate-pulse"
               >
                 <Square className="w-4 h-4" />
                 <span>Stop Recording ({formatTime(recordingDuration)})</span>
               </button>
             )}
 
-            <label className="flex items-center space-x-1.5 px-4 py-2.5 bg-white hover:bg-stone-50 text-slate-700 rounded-xl text-xs font-semibold cursor-pointer border border-slate-200/90 shadow-sm transition-all">
-              <Upload className="w-4 h-4 text-amber-600" />
+            <label className="flex items-center space-x-1.5 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-violet-100 rounded-xl text-xs font-semibold cursor-pointer border border-violet-500/30 shadow-sm transition-all">
+              <Upload className="w-4 h-4 text-violet-300" />
               <span>Upload Audio</span>
               <input type="file" accept="audio/*" onChange={handleFileUpload} className="hidden" />
             </label>
@@ -284,7 +284,7 @@ export default function VoiceRecorder({ onAnalysisComplete, selectedLanguage = '
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-700 mb-1.5">
+          <label className="block text-xs font-bold text-violet-100 mb-1.5">
             Speech Transcript ({currentLang})
           </label>
           <textarea
@@ -292,7 +292,7 @@ export default function VoiceRecorder({ onAnalysisComplete, selectedLanguage = '
             value={manualTranscript}
             onChange={(e) => setManualTranscript(e.target.value)}
             placeholder={`Voice transcript will appear here after recording in ${currentLang}...`}
-            className="w-full bg-stone-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/30 font-medium"
+            className="w-full bg-slate-950 border border-violet-500/35 rounded-xl p-3 text-xs text-white focus:outline-none focus:ring-2 focus:ring-violet-500/30 font-medium placeholder-slate-500"
           />
         </div>
 
@@ -302,19 +302,19 @@ export default function VoiceRecorder({ onAnalysisComplete, selectedLanguage = '
             id="voice-consent"
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
-            className="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500 cursor-pointer"
+            className="mt-0.5 rounded border-violet-400 text-violet-500 focus:ring-violet-500 cursor-pointer"
           />
-          <label htmlFor="voice-consent" className="text-xs text-slate-600 leading-normal cursor-pointer select-none font-medium">
+          <label htmlFor="voice-consent" className="text-xs text-slate-300 leading-normal cursor-pointer select-none font-medium">
             I consent to the confidential processing of my voice interaction for psychological distress assessment.
           </label>
         </div>
 
-        <div className="flex items-center justify-end pt-3 border-t border-slate-100">
+        <div className="flex items-center justify-end pt-3 border-t border-violet-500/20">
           <button
             type="button"
             onClick={handleAnalyzeVoice}
             disabled={loading || isRecording}
-            className="flex items-center space-x-2 px-6 py-3 bg-amber-600 hover:bg-amber-700 disabled:bg-stone-300 text-white rounded-xl text-xs font-bold shadow-md transition-all cursor-pointer"
+            className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-indigo-600 hover:from-violet-400 hover:via-fuchsia-400 hover:to-indigo-500 disabled:from-slate-700 disabled:to-slate-700 text-white rounded-xl text-xs font-bold shadow-md transition-all cursor-pointer"
           >
             {loading ? (
               <>

@@ -1,28 +1,40 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
 
-async function handleResponse(res) {
+async function handleResponse(res, url) {
   if (!res.ok) {
-    const errorData = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(errorData.detail || `Server error (${res.status})`);
+    const errorData = await res.json().catch(() => ({}));
+    const detail = errorData.detail || res.statusText || 'Request failed';
+    throw new Error(`${detail} [${res.status} ${res.statusText}] URL: ${url}`);
   }
   return res.json();
+}
+
+async function request(path, options) {
+  const url = `${API_BASE_URL}${path}`;
+  try {
+    const res = await fetch(url, options);
+    return handleResponse(res, url);
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(`Network error while calling ${url}: ${error.message}`);
+    }
+    throw error;
+  }
 }
 
 export const api = {
   // Health
   async checkHealth() {
-    const res = await fetch(`${API_BASE_URL}/api/health`);
-    return handleResponse(res);
+    return request('/api/health');
   },
 
   // Module 1: Interaction Analysis
   async analyzeText(text, language = 'English', case_id = null, consent = true) {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module1/analyze-text`, {
+    return request('/api/v1/module1/analyze-text', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text, language, case_id, consent })
     });
-    return handleResponse(res);
   },
 
   async analyzeVoice(audioFile, transcriptText = null, language = 'Tamil', case_id = null, consent = true) {
@@ -33,32 +45,28 @@ export const api = {
     formData.append('consent', consent ? 'true' : 'false');
     if (audioFile) formData.append('audio_file', audioFile);
 
-    const res = await fetch(`${API_BASE_URL}/api/v1/module1/analyze-voice`, {
+    return request('/api/v1/module1/analyze-voice', {
       method: 'POST',
       body: formData
     });
-    return handleResponse(res);
   },
 
   // Module 2: SVI Assessment
   async calculateSvi(payload) {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module2/assess`, {
+    return request('/api/v1/module2/assess', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    return handleResponse(res);
   },
 
   async getSviConfig() {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module2/config`);
-    return handleResponse(res);
+    return request('/api/v1/module2/config');
   },
 
   // Module 3: Support Recommendations & Case Management
   async getDashboardSummary() {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module3/dashboard/summary`);
-    return handleResponse(res);
+    return request('/api/v1/module3/dashboard/summary');
   },
 
   async getCases(params = {}) {
@@ -68,69 +76,60 @@ export const api = {
         query.append(k, params[k]);
       }
     });
-    const res = await fetch(`${API_BASE_URL}/api/v1/module3/cases?${query.toString()}`);
-    return handleResponse(res);
+    return request(`/api/v1/module3/cases?${query.toString()}`);
   },
 
   async getCase(caseId) {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module3/case/${caseId}`);
-    return handleResponse(res);
+    return request(`/api/v1/module3/case/${caseId}`);
   },
 
   async updateCaseStatus(caseId, status, reason) {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module3/case/${caseId}/status`, {
+    return request(`/api/v1/module3/case/${caseId}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status, reason })
     });
-    return handleResponse(res);
   },
 
   async assignCase(caseId, assignedTo) {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module3/case/${caseId}/assign`, {
+    return request(`/api/v1/module3/case/${caseId}/assign`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ assigned_to: assignedTo })
     });
-    return handleResponse(res);
   },
 
   async addCaseNote(caseId, note, visibility = 'AUTHORIZED_STAFF') {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module3/case/${caseId}/notes`, {
+    return request(`/api/v1/module3/case/${caseId}/notes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ note, visibility })
     });
-    return handleResponse(res);
   },
 
   async createReferral(caseId, referralType, destination, notes = null) {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module3/case/${caseId}/referral`, {
+    return request(`/api/v1/module3/case/${caseId}/referral`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ referral_type: referralType, destination, notes })
     });
-    return handleResponse(res);
   },
 
   async getReferrals() {
-    const res = await fetch(`${API_BASE_URL}/api/v1/module3/referrals`);
-    return handleResponse(res);
+    return request('/api/v1/module3/referrals');
   },
 
   async getAuditLogs(caseId = null) {
     const query = caseId ? `?case_id=${encodeURIComponent(caseId)}` : '';
-    const res = await fetch(`${API_BASE_URL}/api/v1/module3/audit-logs${query}`);
-    return handleResponse(res);
+    return request(`/api/v1/module3/audit-logs${query}`);
   },
 
   // Full End-to-End Pipeline Execution (Module 1 -> Module 2 -> Module 3)
   async runFullAssessment(data) {
-    const res = await fetch(`${API_BASE_URL}/api/v1/assessment/run`, {
+    return request('/api/v1/assessment/run', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    return handleResponse(res);
   }
 };

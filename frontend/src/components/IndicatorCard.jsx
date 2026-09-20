@@ -5,9 +5,9 @@ export default function IndicatorCard({ indicators = [], traumaIndicators = [], 
   return (
     <div className="space-y-6">
       {urgentReview && (
-        <div className="bg-gradient-to-r from-red-500 via-rose-600 to-red-600 text-white rounded-2xl p-5 shadow-lg warm-card-hover animate-pulse-glow">
+        <div className="bg-gradient-to-r from-red-600 via-rose-600 to-rose-700 text-white rounded-2xl p-5 shadow-lg border border-red-400/30">
           <div className="flex items-start space-x-3.5">
-            <div className="p-3 bg-white/20 backdrop-blur-md rounded-xl text-white shadow shrink-0 mt-0.5">
+            <div className="p-3 bg-white/15 backdrop-blur-md rounded-xl text-white shadow shrink-0 mt-0.5 border border-white/20">
               <ShieldAlert className="w-7 h-7" />
             </div>
             <div className="flex-1">
@@ -28,20 +28,19 @@ export default function IndicatorCard({ indicators = [], traumaIndicators = [], 
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {/* Emotional Indicators */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm warm-card-hover space-y-3">
-          <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
-            <div className="p-1.5 bg-blue-50 text-blue-600 rounded-lg">
+        <div className="bg-slate-900/80 border border-violet-500/20 rounded-2xl p-5 shadow-[0_18px_45px_rgba(15,23,42,0.3)] space-y-3">
+          <div className="flex items-center space-x-2 border-b border-violet-500/20 pb-3">
+            <div className="p-1.5 bg-violet-500/15 text-violet-200 rounded-lg border border-violet-400/30">
               <HeartPulse className="w-4 h-4" />
             </div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">Emotional Indicators</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-violet-100">Emotional Indicators</h4>
           </div>
 
           {indicators.length > 0 ? (
             <ul className="space-y-2">
               {indicators.map((ind, idx) => (
-                <li key={idx} className="flex items-start space-x-2.5 text-xs text-slate-700 bg-blue-50/50 p-2.5 rounded-xl border border-blue-100/60 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-blue-500 mt-1 shrink-0"></span>
+                <li key={idx} className="flex items-start space-x-2.5 text-xs text-violet-100 bg-violet-500/10 p-2.5 rounded-xl border border-violet-500/20 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-violet-400 mt-1 shrink-0"></span>
                   <span>{ind}</span>
                 </li>
               ))}
@@ -51,20 +50,19 @@ export default function IndicatorCard({ indicators = [], traumaIndicators = [], 
           )}
         </div>
 
-        {/* Trauma & Isolation */}
-        <div className="bg-white border border-amber-200/80 rounded-2xl p-5 shadow-sm warm-card-hover space-y-3">
-          <div className="flex items-center space-x-2 border-b border-amber-100 pb-3">
-            <div className="p-1.5 bg-amber-50 text-amber-600 rounded-lg">
+        <div className="bg-slate-900/80 border border-violet-500/20 rounded-2xl p-5 shadow-[0_18px_45px_rgba(15,23,42,0.3)] space-y-3">
+          <div className="flex items-center space-x-2 border-b border-violet-500/20 pb-3">
+            <div className="p-1.5 bg-violet-500/15 text-violet-200 rounded-lg border border-violet-400/30">
               <UserX className="w-4 h-4" />
             </div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-900">Trauma & Isolation</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-violet-100">Trauma & Isolation</h4>
           </div>
 
           {[...traumaIndicators, ...vulnerabilityIndicators].length > 0 ? (
             <ul className="space-y-2">
               {[...traumaIndicators, ...vulnerabilityIndicators].map((ind, idx) => (
-                <li key={idx} className="flex items-start space-x-2.5 text-xs text-amber-900 bg-amber-50/60 p-2.5 rounded-xl border border-amber-200/70 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 mt-1 shrink-0"></span>
+                <li key={idx} className="flex items-start space-x-2.5 text-xs text-violet-100 bg-violet-500/10 p-2.5 rounded-xl border border-violet-500/20 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-violet-400 mt-1 shrink-0"></span>
                   <span>{ind}</span>
                 </li>
               ))}
@@ -74,27 +72,26 @@ export default function IndicatorCard({ indicators = [], traumaIndicators = [], 
           )}
         </div>
 
-        {/* Urgent Safety Indicators */}
-        <div className="bg-white border border-rose-200/80 rounded-2xl p-5 shadow-sm warm-card-hover space-y-3">
-          <div className="flex items-center space-x-2 border-b border-rose-100 pb-3">
-            <div className="p-1.5 bg-rose-50 text-rose-600 rounded-lg">
+        <div className="bg-slate-900/80 border border-violet-500/20 rounded-2xl p-5 shadow-[0_18px_45px_rgba(15,23,42,0.3)] space-y-3">
+          <div className="flex items-center space-x-2 border-b border-violet-500/20 pb-3">
+            <div className="p-1.5 bg-violet-500/15 text-violet-200 rounded-lg border border-violet-400/30">
               <FileWarning className="w-4 h-4" />
             </div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-rose-900">Urgent Safety Indicators</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-violet-100">Urgent Safety Indicators</h4>
           </div>
 
           {urgentSafetyIndicators.length > 0 ? (
             <ul className="space-y-2">
               {urgentSafetyIndicators.map((ind, idx) => (
-                <li key={idx} className="flex items-start space-x-2 text-xs text-rose-900 font-bold bg-rose-50 p-2.5 rounded-xl border border-rose-200">
-                  <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                <li key={idx} className="flex items-start space-x-2 text-xs text-rose-100 font-bold bg-rose-500/10 p-2.5 rounded-xl border border-rose-400/30">
+                  <AlertTriangle className="w-4 h-4 text-rose-300 shrink-0 mt-0.5" />
                   <span>{ind}</span>
                 </li>
               ))}
             </ul>
           ) : (
-            <div className="flex items-center space-x-2.5 p-3 bg-emerald-50/80 rounded-xl border border-emerald-200/80 text-xs text-emerald-800 font-medium">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <div className="flex items-center space-x-2.5 p-3 bg-emerald-500/10 rounded-xl border border-emerald-400/30 text-xs text-emerald-200 font-medium">
+              <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
               <span>No immediate physical safety threats detected.</span>
             </div>
           )}

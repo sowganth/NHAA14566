@@ -1,4 +1,7 @@
 from contextlib import asynccontextmanager
+import json
+import os
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -32,10 +35,23 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS Middleware for local frontend development (Vite default: http://localhost:5173)
+def get_cors_origins():
+    configured_origins = os.getenv(
+        "CORS_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173"
+    )
+    try:
+        origins = json.loads(configured_origins)
+        if isinstance(origins, list):
+            return [origin.strip() for origin in origins if origin.strip() and origin.strip() != "*"]
+    except json.JSONDecodeError:
+        pass
+    return [origin.strip() for origin in configured_origins.split(",") if origin.strip() and origin.strip() != "*"]
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=get_cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

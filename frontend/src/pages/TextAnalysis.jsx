@@ -68,44 +68,45 @@ export default function TextAnalysis({ selectedLanguage = 'English', setSelected
     }
   };
 
+  const distressScore = result?.emotion_scores?.distress ?? 0;
+  const summaryTone = distressScore >= 75 ? 'Urgent Intervention Required' : distressScore >= 50 ? 'Moderate Concern' : 'Low to Moderate Concern';
+
   return (
-    <div className="space-y-6">
-      {/* Title */}
-      <div className="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 p-1 sm:p-2">
+      <div className="bg-gradient-to-r from-violet-600 via-fuchsia-600 to-purple-700 p-6 rounded-2xl border border-violet-300/30 shadow-[0_18px_45px_rgba(168,85,247,0.35)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center space-x-3">
-          <div className="p-2.5 bg-blue-600/20 text-blue-400 rounded-lg border border-blue-500/30">
+          <div className="p-2.5 bg-violet-200/20 text-violet-100 rounded-xl border border-violet-200/30 shadow-inner">
             <FileText className="w-6 h-6" />
           </div>
           <div>
             <h1 className="text-lg font-bold text-white">Module 1 — Text Narrative Interaction Analysis</h1>
-            <p className="text-xs text-slate-400">Multi-lingual NLP psychological distress, trauma, & emotion indicator extraction</p>
+            <p className="text-xs text-violet-100/80">Multi-lingual NLP psychological distress, trauma, and emotion indicator extraction</p>
           </div>
         </div>
 
-        {/* Demo buttons */}
         <div className="flex flex-wrap gap-2">
           {TEXT_DEMOS.map((demo, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => loadDemo(demo)}
-              className="px-2.5 py-1.5 bg-slate-950 hover:bg-blue-950 border border-slate-800 hover:border-blue-500/50 text-blue-300 rounded text-xs font-medium transition-all flex items-center gap-1 cursor-pointer"
+              className="px-2.5 py-1.5 bg-slate-950/70 hover:bg-violet-900/90 border border-violet-300/30 hover:border-violet-200/70 text-violet-100 rounded-lg text-xs font-medium transition-all flex items-center gap-1 cursor-pointer"
             >
-              <Sparkles className="w-3 h-3 text-amber-400" />
+              <Sparkles className="w-3 h-3 text-amber-300" />
               <span>{demo.label}</span>
             </button>
           ))}
         </div>
       </div>
 
-      <form onSubmit={handleAnalyze} className="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-lg space-y-4">
+      <form onSubmit={handleAnalyze} className="bg-gradient-to-br from-slate-900/90 via-slate-900 to-violet-950/70 p-6 rounded-2xl border border-violet-500/25 shadow-[0_18px_45px_rgba(15,23,42,0.4)] space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-slate-300 mb-1">Target Interaction Language</label>
             <select
               value={currentLang}
               onChange={(e) => handleLangChange(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-blue-500 cursor-pointer"
+              className="w-full bg-slate-950 border border-violet-500/35 rounded-xl px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-violet-400 cursor-pointer"
             >
               {LANGUAGES.map((lang) => (
                 <option key={lang} value={lang}>{lang}</option>
@@ -120,7 +121,7 @@ export default function TextAnalysis({ selectedLanguage = 'English', setSelected
               value={caseId}
               onChange={(e) => setCaseId(e.target.value)}
               placeholder="e.g. DEMO-14566-TEXT"
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500"
+              className="w-full bg-slate-950 border border-violet-500/35 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-400"
             />
           </div>
         </div>
@@ -132,7 +133,7 @@ export default function TextAnalysis({ selectedLanguage = 'English', setSelected
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder={`Enter intake narrative in ${currentLang}...`}
-            className="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
+            className="w-full bg-slate-950 border border-violet-500/35 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-violet-400"
             required
           />
         </div>
@@ -143,7 +144,7 @@ export default function TextAnalysis({ selectedLanguage = 'English', setSelected
             id="text-consent"
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
-            className="rounded bg-slate-950 border-slate-700 text-blue-600 cursor-pointer"
+            className="rounded bg-slate-950 border-violet-500/35 text-violet-500 cursor-pointer"
           />
           <label htmlFor="text-consent" className="text-xs text-slate-300 cursor-pointer select-none">
             I consent to the confidential processing of this interaction for psychological distress assessment.
@@ -151,7 +152,7 @@ export default function TextAnalysis({ selectedLanguage = 'English', setSelected
         </div>
 
         {error && (
-          <div className="p-3 bg-red-950/80 border border-red-800 text-red-200 text-xs rounded-lg flex items-center gap-2">
+          <div className="p-3 bg-red-950/80 border border-red-800 text-red-200 text-xs rounded-xl flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
             <span>{error}</span>
           </div>
@@ -160,7 +161,7 @@ export default function TextAnalysis({ selectedLanguage = 'English', setSelected
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 text-white font-bold text-xs rounded-lg shadow transition-all flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full py-3 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-indigo-600 hover:from-violet-400 hover:via-fuchsia-400 hover:to-indigo-500 disabled:from-slate-700 disabled:to-slate-700 text-white font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           {loading ? (
             <>
@@ -177,7 +178,28 @@ export default function TextAnalysis({ selectedLanguage = 'English', setSelected
       </form>
 
       {result && (
-        <div className="space-y-6 pt-4 border-t border-slate-800">
+        <div className="space-y-6 pt-4 border-t border-slate-700">
+          <div className="bg-gradient-to-r from-violet-950/80 via-slate-900 to-indigo-950/80 rounded-2xl border border-violet-500/30 p-5 shadow-[0_18px_45px_rgba(91,33,182,0.22)]">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-violet-200 font-semibold">Assessment summary</p>
+                <h2 className="mt-1 text-xl font-bold text-white">{summaryTone}</h2>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="px-3 py-2 rounded-xl bg-slate-950/80 border border-violet-500/30">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Distress</div>
+                  <div className="mt-1 text-lg font-black text-violet-200">{distressScore}%</div>
+                </div>
+                <div className="px-3 py-2 rounded-xl bg-slate-950/80 border border-violet-500/30">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Urgent review</div>
+                  <div className={`mt-1 text-sm font-bold ${result.urgent_review ? 'text-rose-300' : 'text-emerald-300'}`}>
+                    {result.urgent_review ? 'Yes' : 'No'}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <IndicatorCard
             indicators={result.indicators}
             traumaIndicators={result.trauma_indicators}

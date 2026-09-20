@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import VoiceRecorder from '../components/VoiceRecorder';
@@ -54,6 +54,12 @@ export default function NewAssessment({ selectedLanguage = 'English', setSelecte
   const [step, setStep] = useState(0); // 0: idle, 1: M1, 2: M2, 3: M3
   const [result, setResult] = useState(null);
 
+  useEffect(() => {
+    if (selectedLanguage && selectedLanguage !== language) {
+      setLanguage(selectedLanguage);
+    }
+  }, [selectedLanguage, language]);
+
   const applyPreset = (p) => {
     setState(p.state);
     setDistrict(p.district);
@@ -106,50 +112,47 @@ export default function NewAssessment({ selectedLanguage = 'English', setSelecte
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Title Banner */}
-      <div className="bg-white p-6 rounded-2xl border border-amber-200/70 shadow-sm warm-card-hover">
+    <div className="max-w-5xl mx-auto space-y-6 pb-4">
+      <div className="bg-gradient-to-r from-violet-700 via-fuchsia-700 to-purple-800 p-6 rounded-2xl border border-violet-400/30 shadow-[0_20px_50px_rgba(168,85,247,0.2)]">
         <div className="flex items-center space-x-3.5">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-white flex items-center justify-center font-bold shadow-md shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/20 text-white flex items-center justify-center shadow-md shrink-0 backdrop-blur-sm">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-slate-800">Run End-to-End Assessment Pipeline</h1>
-            <p className="text-xs text-slate-500 mt-0.5 font-medium">
-              Module 1 (Interaction NLP) → Module 2 (SVI Engine) → Module 3 (Support & Case Management)
+            <h1 className="text-xl font-bold text-white">New Assessment — End-to-End Assessment</h1>
+            <p className="text-xs text-violet-100/80 mt-0.5 font-medium">
+              Module 1 (NLP) → Module 2 (SVI Engine) → Module 3 (Support & Case Management)
             </p>
           </div>
         </div>
       </div>
 
-      {/* Preset Buttons */}
-      <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-2.5 warm-card-hover">
-        <span className="text-xs font-bold text-slate-700 block flex items-center">
-          <Sparkles className="w-3.5 h-3.5 mr-1.5 text-amber-600" />
-          Quick Fictional Demo Presets:
-        </span>
+      <div className="bg-slate-900/80 p-5 rounded-2xl border border-violet-500/25 shadow-[0_18px_45px_rgba(15,23,42,0.35)] space-y-3">
+        <div className="flex items-center gap-2 text-sm font-bold text-violet-100">
+          <Sparkles className="w-4 h-4 text-violet-300" />
+          <span>Quick Fictional Demo Presets</span>
+        </div>
         <div className="flex flex-wrap gap-2">
           {DEMO_PRESETS.map((p, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => applyPreset(p)}
-              className="px-3.5 py-2 bg-amber-50/80 hover:bg-amber-100 border border-amber-200/80 text-amber-900 rounded-xl text-xs font-bold transition-all cursor-pointer hover:scale-105"
+              className="px-3.5 py-2 bg-slate-950/70 hover:bg-violet-950/80 border border-violet-400/30 text-violet-100 rounded-xl text-[11px] font-semibold transition-all cursor-pointer hover:scale-[1.02] hover:border-violet-300/70"
             >
-              ⚡ {p.label}
+              <span className="inline-flex items-center gap-1.5"><Sparkles className="w-3 h-3 text-violet-300" /> {p.label}</span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Tab Selector */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl p-1.5 flex space-x-2 shadow-sm">
+      <div className="bg-slate-900/80 border border-violet-500/25 rounded-2xl p-1.5 flex space-x-2 shadow-[0_18px_45px_rgba(15,23,42,0.25)]">
         <button
           onClick={() => setActiveTab('text')}
           className={`flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'text'
-              ? 'bg-amber-600 text-white shadow-md'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-stone-50'
+              ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-md'
+              : 'text-slate-300 hover:text-violet-100 hover:bg-slate-800/80'
           }`}
         >
           <FileText className="w-4 h-4" />
@@ -160,8 +163,8 @@ export default function NewAssessment({ selectedLanguage = 'English', setSelecte
           onClick={() => setActiveTab('voice')}
           className={`flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'voice'
-              ? 'bg-purple-600 text-white shadow-md'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-stone-50'
+              ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-md'
+              : 'text-slate-300 hover:text-violet-100 hover:bg-slate-800/80'
           }`}
         >
           <Mic className="w-4 h-4" />
@@ -180,39 +183,38 @@ export default function NewAssessment({ selectedLanguage = 'English', setSelecte
         />
       )}
 
-      {/* Input Form */}
-      <form onSubmit={handleRunAssessment} className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5 warm-card-hover">
+      <form onSubmit={handleRunAssessment} className="bg-slate-900/80 p-6 rounded-2xl border border-violet-500/25 shadow-[0_18px_45px_rgba(15,23,42,0.3)] space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">State</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1.5">State</label>
             <select
               value={state}
               onChange={(e) => setState(e.target.value)}
-              className="w-full p-3 bg-stone-50 border border-slate-200 rounded-xl text-xs text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/30 cursor-pointer"
+              className="w-full p-3 bg-slate-950/80 border border-violet-500/30 rounded-xl text-xs text-slate-100 font-semibold focus:outline-none focus:ring-2 focus:ring-violet-400/40 cursor-pointer"
             >
               {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">District</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1.5">District</label>
             <input
               type="text"
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
-              className="w-full p-3 bg-stone-50 border border-slate-200 rounded-xl text-xs text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/30"
+              className="w-full p-3 bg-slate-950/80 border border-violet-500/30 rounded-xl text-xs text-slate-100 font-semibold focus:outline-none focus:ring-2 focus:ring-violet-400/40"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">Language</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Language</label>
             <select
               value={language}
               onChange={(e) => {
                 setLanguage(e.target.value);
                 if (setSelectedLanguage) setSelectedLanguage(e.target.value);
               }}
-              className="w-full p-3 bg-stone-50 border border-slate-200 rounded-xl text-xs text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/30 cursor-pointer"
+              className="w-full p-3 bg-slate-950/80 border border-violet-500/30 rounded-xl text-xs text-slate-100 font-semibold focus:outline-none focus:ring-2 focus:ring-violet-400/40 cursor-pointer"
             >
               {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
             </select>
@@ -220,7 +222,7 @@ export default function NewAssessment({ selectedLanguage = 'English', setSelecte
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-700 mb-1.5">
+          <label className="block text-xs font-semibold text-slate-300 mb-1.5">
             Complainant Interaction Narrative ({language})
           </label>
           <textarea
@@ -229,14 +231,27 @@ export default function NewAssessment({ selectedLanguage = 'English', setSelecte
             value={narrative}
             onChange={(e) => setNarrative(e.target.value)}
             required
-            className="w-full p-3.5 bg-stone-50 border border-slate-200 rounded-xl text-xs text-slate-800 font-medium focus:ring-2 focus:ring-amber-500/30 focus:outline-none placeholder-slate-400"
+            className="w-full p-3.5 bg-slate-950/80 border border-violet-500/30 rounded-xl text-xs text-slate-100 font-medium focus:ring-2 focus:ring-violet-400/40 focus:outline-none placeholder-slate-500"
           />
+        </div>
+
+        <div className="flex items-center gap-2 text-xs text-slate-300">
+          <input
+            type="checkbox"
+            id="consent-check"
+            checked={true}
+            readOnly
+            className="rounded border-violet-400/50 bg-slate-950 text-violet-500 focus:ring-violet-400/40"
+          />
+          <label htmlFor="consent-check" className="cursor-pointer select-none">
+            I consent to the confidential processing of this interaction for psychological distress assessment.
+          </label>
         </div>
 
         <button
           type="submit"
           disabled={running}
-          className="w-full py-3.5 bg-amber-600 hover:bg-amber-700 disabled:bg-stone-300 text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
+          className="w-full py-3.5 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-400 hover:to-fuchsia-400 disabled:from-slate-700 disabled:to-slate-700 text-white font-extrabold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           {running ? (
             <>
@@ -252,37 +267,36 @@ export default function NewAssessment({ selectedLanguage = 'English', setSelecte
         </button>
       </form>
 
-      {/* Progress Execution Steps */}
       {step > 0 && (
-        <div className="bg-stone-900 text-white p-6 rounded-2xl space-y-4 shadow-xl border border-stone-800 animate-fade-in">
-          <h3 className="text-xs font-bold text-amber-400 uppercase tracking-wider">Pipeline Execution Progress</h3>
+        <div className="bg-slate-950/90 text-white p-6 rounded-2xl space-y-4 shadow-[0_18px_45px_rgba(15,23,42,0.45)] border border-violet-500/25 animate-fade-in">
+          <h3 className="text-xs font-bold text-violet-300 uppercase tracking-wider">Pipeline Execution Progress</h3>
 
           <div className="space-y-3 text-xs">
-            <div className={`flex items-center justify-between p-3.5 rounded-xl border ${step >= 1 ? 'bg-stone-800 border-stone-700 text-stone-100' : 'opacity-40'}`}>
+            <div className={`flex items-center justify-between p-3.5 rounded-xl border ${step >= 1 ? 'bg-slate-900 border-violet-500/30 text-slate-100' : 'opacity-40 border-slate-700'}`}>
               <span className="font-bold">MODULE 1: Interaction Analysis (NLP Emotion & Indicators)</span>
-              {step > 1 ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <RefreshCw className="w-4 h-4 animate-spin text-amber-400" />}
+              {step > 1 ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <RefreshCw className="w-4 h-4 animate-spin text-violet-300" />}
             </div>
 
-            <div className={`flex items-center justify-between p-3.5 rounded-xl border ${step >= 2 ? 'bg-stone-800 border-stone-700 text-stone-100' : 'opacity-40'}`}>
+            <div className={`flex items-center justify-between p-3.5 rounded-xl border ${step >= 2 ? 'bg-slate-900 border-violet-500/30 text-slate-100' : 'opacity-40 border-slate-700'}`}>
               <span className="font-bold">MODULE 2: Stress & Vulnerability Index (SVI Calculation & Safety Overrides)</span>
-              {step > 2 ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : step === 2 ? <RefreshCw className="w-4 h-4 animate-spin text-amber-400" /> : null}
+              {step > 2 ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : step === 2 ? <RefreshCw className="w-4 h-4 animate-spin text-violet-300" /> : null}
             </div>
 
-            <div className={`flex items-center justify-between p-3.5 rounded-xl border ${step >= 3 ? 'bg-stone-800 border-stone-700 text-stone-100' : 'opacity-40'}`}>
+            <div className={`flex items-center justify-between p-3.5 rounded-xl border ${step >= 3 ? 'bg-slate-900 border-violet-500/30 text-slate-100' : 'opacity-40 border-slate-700'}`}>
               <span className="font-bold">MODULE 3: Support Recommendation Pathways & Case Persistence (app.db)</span>
-              {result ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : step === 3 ? <RefreshCw className="w-4 h-4 animate-spin text-amber-400" /> : null}
+              {result ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : step === 3 ? <RefreshCw className="w-4 h-4 animate-spin text-violet-300" /> : null}
             </div>
           </div>
 
           {result && (
-            <div className="pt-4 border-t border-stone-800 bg-stone-950 p-4 rounded-xl space-y-2 text-xs">
+            <div className="pt-4 border-t border-violet-500/20 bg-slate-900 p-4 rounded-xl space-y-2 text-xs">
               <div className="text-emerald-400 font-extrabold flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4" /> Case Created & Saved: {result.case_id}
               </div>
-              <div className="text-stone-300 font-medium">
-                SVI Score: <span className="font-bold text-amber-400">{result.module2.svi}</span> | Risk Category: <span className="font-bold text-rose-400">{result.module2.risk_category}</span>
+              <div className="text-slate-300 font-medium">
+                SVI Score: <span className="font-bold text-violet-300">{result.module2.svi}</span> | Risk Category: <span className="font-bold text-rose-400">{result.module2.risk_category}</span>
               </div>
-              <p className="text-stone-400 font-medium">Redirecting to Case Details page...</p>
+              <p className="text-slate-400 font-medium">Redirecting to Case Details page...</p>
             </div>
           )}
         </div>
