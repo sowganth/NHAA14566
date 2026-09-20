@@ -38,21 +38,27 @@ app = FastAPI(
 def get_cors_origins():
     configured_origins = os.getenv(
         "CORS_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173"
+        "*"
     )
+    if configured_origins.strip() == "*":
+        return ["*"]
     try:
         origins = json.loads(configured_origins)
         if isinstance(origins, list):
-            return [origin.strip() for origin in origins if origin.strip() and origin.strip() != "*"]
+            return [origin.strip() for origin in origins if origin.strip()]
     except json.JSONDecodeError:
         pass
-    return [origin.strip() for origin in configured_origins.split(",") if origin.strip() and origin.strip() != "*"]
+    return [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
 
+
+origins = get_cors_origins()
+has_wildcard = "*" in origins or origins == ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=get_cors_origins(),
-    allow_credentials=True,
+    allow_origins=origins if not has_wildcard else ["*"],
+    allow_origin_regex=r"https://.*\.vercel\.app" if not has_wildcard else None,
+    allow_credentials=not has_wildcard,
     allow_methods=["*"],
     allow_headers=["*"],
 )
